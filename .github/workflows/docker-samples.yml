@@ -20,8 +20,7 @@ jobs:
       DOCKER_BUILDKIT: 1
     steps:
       - uses: actions/checkout@v2
-      - run: docker build -t cysharp/$REPOSITORY -f ./$ROOT/Dockerfile .
-        working-directory: ./samples/ChatApp
+      - run: docker build -t cysharp/$REPOSITORY -f ./$ROOT/Dockerfile ./samples/ChatApp
         env:
           REPOSITORY: ${{ matrix.repository }}
           ROOT: ${{ matrix.root }}
