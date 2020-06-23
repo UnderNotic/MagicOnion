@@ -8,12 +8,12 @@ on:
     tags:
       - "!*" # not a tag push
 
+env:
+  DOTNET_VERSION: 3.1.202 # support latest only
+
 jobs:
   canary-build:
     if: "!(contains(github.event.head_commit.message, '[skip ci]') || contains(github.event.head_commit.message, '[ci skip]'))"
-    strategy:
-      matrix:
-        dotnet: ["3.1.202"] # support latest only
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${{ matrix.dotnet }}
+          dotnet-version: ${{ env.DOTNET_VERSION }}
       - run: echo "::set-env name=MAGICONION_VERSION::ci-`date '+%Y%m%d-%H%M%S'`+${GITHUB_SHA:0:6}"
       - run: echo "MAGICONION_VERSION=${MAGICONION_VERSION}"
       # build
@@ -75,7 +75,7 @@ jobs:
     steps:
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.101
+          dotnet-version: ${{ env.DOTNET_VERSION }}
       - uses: actions/download-artifact@v2-preview
       # Upload to NuGet
       - run: echo "::set-env name=VSS_NUGET_EXTERNAL_FEED_ENDPOINTS::${FEED_ENDPOINTS}"
