@@ -20,7 +20,15 @@ jobs:
       DOCKER_BUILDKIT: 1
     steps:
       - uses: actions/checkout@v2
-      - run: docker build -t cysharp/$REPOSITORY -f ./$ROOT/Dockerfile ./samples/ChatApp
+      - uses: docker/build-push-action@v1
+        with:
+          username: cysharp_admin
+          password: dummy_password
+          dockerfile: ./$ROOT/Dockerfile
+          path: ./samples/ChatApp
+          repository: cysharp/$REPOSITORY
+          tag_with_ref: true
+          push: false
         env:
           REPOSITORY: ${{ matrix.repository }}
           ROOT: ${{ matrix.root }}
